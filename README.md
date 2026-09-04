@@ -1,6 +1,6 @@
 # Stream Deck for Claude
 
-**ClaudeDeck** — a Stream Deck plugin for the **Claude desktop app** on macOS. Answer permission prompts (Allow once / for session / always, Deny), stop a response, send canned replies, fire Claude's keyboard shortcuts, and watch status.claude.com — on physical keys.
+**Deck for Claude** (plugin ID `com.4xsdev.claude`, helper app ClaudeDeck) — a Stream Deck plugin for the **Claude desktop app** on macOS. Answer permission prompts (Allow once / for session / always, Deny), stop a response, send canned replies, fire Claude's keyboard shortcuts, and watch status.claude.com — on physical keys.
 
 **[Website](https://kotyzap.github.io/Stream-Deck-Claude-Plugin/) · [Download plugin](dist/com.4xsdev.claude-kofi.streamDeckPlugin)**
 
@@ -10,11 +10,11 @@ Two builds of the same plugin (same UUID, either updates the other): the GitHub 
 
 ## Install
 
-1. Download [`com.4xsdev.claude-kofi.streamDeckPlugin`](dist/com.4xsdev.claude-kofi.streamDeckPlugin) (or install from the Elgato Marketplace) and double-click it. Stream Deck installs the **ClaudeDeck** action group, a ready-made profile for your device — **Claude** (MK.2, above), **Claude Mini** (3×2) or **Claude XL** (8×4) — and the helper app `~/Applications/ClaudeDeck.app`.
+1. Download [`com.4xsdev.claude-kofi.streamDeckPlugin`](dist/com.4xsdev.claude-kofi.streamDeckPlugin) (or install from the Elgato Marketplace) and double-click it. Stream Deck installs the **Deck for Claude** action group, a ready-made profile for your device — **Claude** (MK.2, above), **Claude Mini** (3×2) or **Claude XL** (8×4) — and the helper app `~/Applications/ClaudeDeck.app`.
 2. macOS asks once for **Accessibility** access for ClaudeDeck (System Settings → Privacy & Security → Accessibility). That is what lets it press buttons in Claude.
 3. Switch to the Claude profile, or drag single actions onto your own keys.
 
-Requirements: macOS 12+, Stream Deck software 6.5+, the Claude desktop app.
+Requirements: macOS 12+, Stream Deck software 6.9+, the Claude desktop app.
 
 ## Actions
 
