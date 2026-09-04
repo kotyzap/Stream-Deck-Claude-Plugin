@@ -58,6 +58,10 @@ td:last-child{color:var(--fg2)}
 footer{padding:36px 0 48px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:14px;color:var(--fg2)}
 footer a{color:var(--fg2)}footer a:hover{color:var(--fg)}
 @media (max-width:820px){.decks{grid-template-columns:1fr}.hero{grid-template-columns:1fr;padding-top:24px}.hero h1{font-size:38px}.grid3,.flow{grid-template-columns:1fr}.navlinks span{display:none}}
+
+.cardlink{display:block;text-decoration:none;color:inherit;transition:border-color .15s}
+.cardlink:hover{border-color:var(--accent)}
+.cardlink h3{color:var(--fg)}
 """
 
 def gh_icon():
@@ -132,6 +136,19 @@ def body(img, toggle_button=True):
       <div class="card"><div class="num">3</div><h3>Switch to the Claude profile</h3><p>Or drag single actions from the "Deck for Claude" group onto keys of your own profile. Reply and Shortcut keys have settings in the inspector.</p></div>
     </div>
     <p class="meta" style="margin-top:24px">Requires the Claude desktop app for macOS. The helper is a small AppleScript + Swift bundle whose source is in the repo; it talks only to the Claude app and to status.claude.com.</p>
+  </section>
+
+
+  <section id="more">
+    <div class="eyebrow">More from 4xs.dev</div>
+    <h2>Other Stream Deck plugins.</h2>
+    <p class="lead">Physical keys for the tools you already use. All free and open source.</p>
+    <div class="grid3">
+      <a class="card cardlink" href="https://github.com/kotyzap/Stream-Deck-Axis-Cam-CamStreamer-Plugin"><h3>Camera Deck for Axis &amp; CamStreamer ↗</h3><p>PTZ, presets, overlays and CamStreamer/CamSwitcher control for Axis cameras</p></a>
+      <a class="card cardlink" href="https://kotyzap.github.io/Stream-Deck-ACS-Edge-Plugin/"><h3>Deck for AXIS Camera Station Edge ↗</h3><p>Recording playback, PTZ and view controls for ACS Edge</p></a>
+      <a class="card cardlink" href="https://kotyzap.github.io/Stream-Deck-ACS-Pro-Plugin/"><h3>Deck for AXIS Camera Station Pro &amp; 5 ↗</h3><p>Playback, cameras, PTZ presets and any hotkey for ACS 5 &amp; Pro</p></a>
+      <a class="card cardlink" href="https://kotyzap.github.io/Stream-Deck-Genetec-Plugin/"><h3>Deck for Genetec Security Desk ↗</h3><p>Playback, alarms, tiles, PTZ, doors and any camera by logical ID for Security Desk</p></a>
+    </div>
   </section>
 
   <footer>

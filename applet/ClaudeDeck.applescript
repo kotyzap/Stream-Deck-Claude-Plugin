@@ -2,7 +2,8 @@
 -- Pavel Kotyza <kotyza@gmail.com> — https://www.4xs.dev
 --
 -- URL scheme:  claudedeck://<command>[/<argument>]
---   allow-once | allow-session | always-allow | deny   press the matching permission button (Accessibility API)
+--   allow-once | always-allow | deny    approve the Cowork permission card via its keyboard shortcut (Cmd+Return / Shift+Cmd+Return / Esc)
+--   allow-session                       Accessibility fallback (no such button in the current card)
 --   stop                                              activate Claude, press Esc
 --   type/<percent-encoded text>                        activate Claude, type text, press Return
 --   hotkey/<mods+key>  e.g. hotkey/cmd+shift+o         activate Claude, send the key combo
@@ -12,9 +13,9 @@
 property logFile : (POSIX path of (path to library folder from user domain)) & "Logs/ClaudeDeck.log"
 
 -- Candidate labels, tried in order. Update here if Anthropic renames a button (use claudedeck://inspect to see current ones).
-property labelsAllowOnce : {"Allow once", "Allow Once", "Allow"}
-property labelsAllowSession : {"Allow for session", "Allow for this session", "Allow for chat", "Allow for this chat"}
-property labelsAlwaysAllow : {"Always allow", "Allow always", "Always Allow", "Allow Always"}
+property labelsAllowOnce : {"Allow once"}
+property labelsAllowSession : {"Allow for this chat", "Allow for chat", "Allow for this session", "Allow for session"}
+property labelsAlwaysAllow : {"Always allow", "Allow always"}
 property labelsDeny : {"Deny", "Don't allow", "Don’t allow", "Decline", "Reject"}
 
 on run
@@ -33,13 +34,20 @@ on open location theURL
 		end if
 		logMsg("cmd=" & cmd & " arg=" & arg)
 		if cmd is "allow-once" then
-			pressFirst(labelsAllowOnce)
-		else if cmd is "allow-session" then
-			pressFirst(labelsAllowSession)
+			-- Cowork permission card: "Allow once" = Cmd+Return (see the badge on the button)
+			activateClaude()
+			tell application "System Events" to key code 36 using {command down}
 		else if cmd is "always-allow" then
-			pressFirst(labelsAlwaysAllow)
+			-- "Always allow" = Shift+Cmd+Return
+			activateClaude()
+			tell application "System Events" to key code 36 using {command down, shift down}
 		else if cmd is "deny" then
-			pressFirst(labelsDeny)
+			-- "Deny" = Esc
+			activateClaude()
+			tell application "System Events" to key code 53
+		else if cmd is "allow-session" then
+			-- no "Allow for session" button in the current Cowork card; try the Accessibility fallback in case a build has one
+			pressFirst(labelsAllowSession)
 		else if cmd is "stop" then
 			activateClaude()
 			tell application "System Events" to key code 53 -- Esc
