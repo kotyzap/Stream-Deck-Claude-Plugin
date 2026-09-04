@@ -1,0 +1,218 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+  "Name": "Claude",
+  "Version": "1.1.1.0",
+  "Author": "Pavel Kotyza",
+  "Description": "Keys for the Claude desktop app: answer permission prompts (Allow once / for session / always, Deny), Stop, canned replies, shortcuts, live status.claude.com. Requires ClaudeDeck.app (macOS). https://www.4xs.dev",
+  "UUID": "com.4xsdev.claude",
+  "Icon": "imgs/plugin/marketplace",
+  "Category": "Claude",
+  "CategoryIcon": "imgs/plugin/category",
+  "CodePath": "bin/plugin.js",
+  "SDKVersion": 2,
+  "Software": {
+    "MinimumVersion": "6.5"
+  },
+  "OS": [
+    {
+      "Platform": "mac",
+      "MinimumVersion": "12"
+    }
+  ],
+  "Nodejs": {
+    "Version": "20"
+  },
+  "Actions": [
+    {
+      "Name": "Allow once",
+      "UUID": "com.4xsdev.claude.allow-once",
+      "Icon": "imgs/actions/allow-once/icon",
+      "Tooltip": "Press “Allow once” in the current Claude permission prompt.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": true,
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/actions/allow-once/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ]
+    },
+    {
+      "Name": "Allow for session",
+      "UUID": "com.4xsdev.claude.allow-session",
+      "Icon": "imgs/actions/allow-session/icon",
+      "Tooltip": "Press “Allow for session” in the current Claude permission prompt.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": true,
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/actions/allow-session/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ]
+    },
+    {
+      "Name": "Always allow",
+      "UUID": "com.4xsdev.claude.always-allow",
+      "Icon": "imgs/actions/always-allow/icon",
+      "Tooltip": "Press “Always allow” in the current Claude permission prompt.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": true,
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/actions/always-allow/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ]
+    },
+    {
+      "Name": "Deny",
+      "UUID": "com.4xsdev.claude.deny",
+      "Icon": "imgs/actions/deny/icon",
+      "Tooltip": "Press “Deny” in the current Claude permission prompt.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": true,
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/actions/deny/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ]
+    },
+    {
+      "Name": "Stop",
+      "UUID": "com.4xsdev.claude.stop",
+      "Icon": "imgs/actions/stop/icon",
+      "Tooltip": "Activate Claude and press Esc (stop the response).",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": true,
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/actions/stop/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ]
+    },
+    {
+      "Name": "Reply",
+      "UUID": "com.4xsdev.claude.reply",
+      "Icon": "imgs/actions/reply/icon",
+      "Tooltip": "Activate Claude, type a canned reply and press Return. Text is configurable.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": true,
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/actions/reply/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ],
+      "PropertyInspectorPath": "ui/reply.html"
+    },
+    {
+      "Name": "Shortcut",
+      "UUID": "com.4xsdev.claude.shortcut",
+      "Icon": "imgs/actions/shortcut/icon",
+      "Tooltip": "Send one of Claude.app’s keyboard shortcuts (new chat, new session, search…).",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": true,
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/actions/shortcut/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ],
+      "PropertyInspectorPath": "ui/shortcut.html"
+    },
+    {
+      "Name": "Activate Claude",
+      "UUID": "com.4xsdev.claude.activate",
+      "Icon": "imgs/actions/activate/icon",
+      "Tooltip": "Bring the Claude app to the front.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": true,
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/actions/activate/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ]
+    },
+    {
+      "Name": "Claude Status",
+      "UUID": "com.4xsdev.claude.status",
+      "Icon": "imgs/actions/status/icon",
+      "Tooltip": "status.claude.com on a key: green OK, yellow minor, orange major, red critical. Press opens the page.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": false,
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/actions/status/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ]
+    },
+    {
+      "Name": "Inspect",
+      "UUID": "com.4xsdev.claude.inspect",
+      "Icon": "imgs/actions/inspect/icon",
+      "Tooltip": "Log every button label in Claude’s windows to ~/Library/Logs/ClaudeDeck.log (for fixing renamed buttons).",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": true,
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/actions/inspect/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ]
+    }
+  ],
+  "Profiles": [
+    {
+      "Name": "Claude",
+      "DeviceType": 0,
+      "Readonly": false,
+      "DontAutoSwitchToProfile": true,
+      "AutoInstall": true
+    }
+  ]
+}

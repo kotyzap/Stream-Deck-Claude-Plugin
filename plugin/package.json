@@ -1,0 +1,10 @@
+{
+  "name": "stream-deck-claude-plugin",
+  "private": true,
+  "type": "module",
+  "author": "Pavel Kotyza <kotyza@gmail.com>",
+  "license": "MIT",
+  "scripts": { "build": "rollup -c" },
+  "dependencies": { "@elgato/streamdeck": "^2.1.2" },
+  "devDependencies": { "rollup": "^4", "@rollup/plugin-node-resolve": "^16", "@rollup/plugin-commonjs": "^28" }
+}

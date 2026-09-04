@@ -1,0 +1,8 @@
+node_modules/
+plugin/build/
+applet/build/
+dist/*.sdPlugin/
+site/canvas/*.html
+site/canvas/*.png
+.DS_Store
+profile/build/

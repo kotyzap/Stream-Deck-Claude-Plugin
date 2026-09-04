@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stream Deck for Claude</title>
+<meta name="description" content="Stream Deck plugin for the Claude desktop app: answer permission prompts, stop, canned replies, shortcuts and live status on physical keys.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+:root{--bg:#f7f5f1;--bg2:#efece6;--fg:#1c1b19;--fg2:#5f5c56;--line:#e0dcd4;--card:#ffffff;--accent:#c96442;--accent-fg:#ffffff;--deck:#1c1c1e}
+[data-theme=dark]{--bg:#161615;--bg2:#1f1f1e;--fg:#f2f0ec;--fg2:#a09c94;--line:#2c2b29;--card:#1d1d1c;--accent:#d97757;--accent-fg:#161615}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}a:hover{color:var(--fg)}
+h1,h2,h3{font-family:"Space Grotesk","Helvetica Neue",Arial,sans-serif;letter-spacing:-0.02em;margin:0}
+code,kbd{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:0.9em}
+kbd{background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:1px 7px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:12px;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:18px;color:var(--fg)}
+.mark{width:30px;height:30px;border-radius:8px;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font-weight:700;font-size:17px}
+.navlinks{display:flex;align-items:center;gap:22px;font-size:15px;color:var(--fg2)}
+.navlinks a{color:var(--fg2)}.navlinks a:hover{color:var(--fg)}
+.toggle{width:40px;height:26px;border-radius:13px;border:1px solid var(--line);background:var(--bg2);position:relative;cursor:pointer;padding:0}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--fg);transition:left .15s}
+[data-theme=dark] .toggle::after{left:17px}
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:48px;align-items:center;padding:56px 0 64px}
+.hero h1{font-size:48px;line-height:1.05;font-weight:700}
+.hero p{font-size:19px;color:var(--fg2);margin:20px 0 28px}
+.cta{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--accent-fg);font-weight:500;padding:13px 20px;border-radius:10px;font-size:16px}
+.btn:hover{color:var(--accent-fg);filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.meta{font-size:14px;color:var(--fg2)}
+.hero img{width:100%;height:auto;display:block}
+section{padding:56px 0;border-top:1px solid var(--line)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+h2{font-size:32px;font-weight:700;margin-bottom:12px}
+.lead{font-size:18px;color:var(--fg2);max-width:640px;margin:0 0 32px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card h3{font-size:18px;margin-bottom:8px}
+.card p{margin:0;color:var(--fg2);font-size:15.5px}
+.num{font-family:"IBM Plex Mono",monospace;color:var(--accent);font-size:13px;margin-bottom:10px}
+.sheet{background:var(--deck);border-radius:16px;padding:24px 20px 8px;margin:0 0 28px;overflow:auto}
+.sheet img{display:block;width:100%;min-width:900px;height:auto}
+.states{background:var(--deck);border-radius:16px;padding:18px 20px;display:inline-block}
+.states img{display:block;height:112px;width:auto}
+table{width:100%;border-collapse:collapse;font-size:15.5px}
+td{padding:10px 0;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:500;white-space:nowrap;padding-right:22px}
+td:last-child{color:var(--fg2)}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
+.flow .card{position:relative}
+footer{padding:36px 0 48px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:14px;color:var(--fg2)}
+footer a{color:var(--fg2)}footer a:hover{color:var(--fg)}
+@media (max-width:820px){.hero{grid-template-columns:1fr;padding-top:24px}.hero h1{font-size:38px}.grid3,.flow{grid-template-columns:1fr}.navlinks span{display:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <a class="brand" href="#"><span class="mark">C</span><span>Stream Deck for Claude</span></a>
+    <div class="navlinks"><a href="#actions">Actions</a><a href="#how">How it works</a><a href="#install">Install</a><a href="https://github.com/kotyzap/Stream-Deck-Claude-Plugin"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a><button class="toggle" id="theme" aria-label="Toggle dark mode" onclick="toggleTheme()"></button></div>
+  </nav>
+
+  <div class="hero">
+    <div>
+      <h1>Answer Claude from your Stream Deck.</h1>
+      <p>Allow once, allow always, deny, stop, "continue" — the prompts you answer fifty times a day, on physical keys. Plus Claude's own shortcuts and a live status.claude.com light.</p>
+      <div class="cta">
+        <a class="btn" href="https://github.com/kotyzap/Stream-Deck-Claude-Plugin/raw/main/dist/com.4xsdev.claude.streamDeckPlugin"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Download plugin</a>
+        <a class="btn ghost" href="https://github.com/kotyzap/Stream-Deck-Claude-Plugin">Source on GitHub</a>
+      </div>
+      <p class="meta" style="margin-top:16px">macOS · Stream Deck 6.5+ · one-click install: actions, a ready profile and the helper app. Free, MIT.</p>
+    </div>
+    <img src="img/deck.png" width="976" height="644" alt="Stream Deck with the default Claude profile: Allow once, Allow session, Always allow, Deny, Stop; continue, yes, fix it, commit, Claude Status; Claude, New chat, New session, Search, Inspect">
+  </div>
+
+  <section id="actions">
+    <div class="eyebrow">Ten actions</div>
+    <h2>Drag what you need.</h2>
+    <p class="lead">The plugin adds a "Claude" group to the Stream Deck action list — the same way any other plugin does. The bundled profile is one arrangement; every key is replaceable.</p>
+    <div class="sheet"><img src="img/actions.png" width="1492" height="194" alt="All ten actions: Allow once, Allow for session, Always allow, Deny, Stop, Reply, Shortcut, Activate Claude, Claude Status, Inspect"></div>
+    <table>
+      <tr><td>Allow once · Allow for session · Always allow · Deny</td><td>Presses that button in the permission prompt that is currently on screen. The desktop app has no keyboard shortcuts for these, so the helper finds the button through macOS Accessibility and presses it — about 50 ms.</td></tr>
+      <tr><td>Stop</td><td>Brings Claude to the front and presses <kbd>Esc</kbd>.</td></tr>
+      <tr><td>Reply</td><td>Types a text you configure ("continue", "yes", "fix it", "commit"…) and presses Return. Claude is activated first, so it never types into the wrong window.</td></tr>
+      <tr><td>Shortcut</td><td>Sends one of the app's own accelerators: new chat <kbd>⌘N</kbd>, new Claude Code session <kbd>⌘⇧O</kbd>, search <kbd>⌘⇧K</kbd>, command palette <kbd>⌘K</kbd>, sidebar <kbd>⌘B</kbd>, previous / next session <kbd>⌘⇧[</kbd> <kbd>⌘⇧]</kbd>, side chat <kbd>⌘;</kbd>.</td></tr>
+      <tr><td>Claude Status</td><td>Polls status.claude.com every minute. Green, yellow, orange, red follow the incident level; the small line names the affected component. Press opens the status page.</td></tr>
+      <tr><td>Activate Claude · Inspect</td><td>Bring the app forward; write every button label Claude exposes to a log — the repair tool for the day a button gets renamed.</td></tr>
+    </table>
+    <div style="margin-top:28px" class="states"><img src="img/status-states.png" width="752" height="140" alt="Claude Status key in its five states: OK, Minor, Major, Critical, offline"></div>
+  </section>
+
+  <section id="how">
+    <div class="eyebrow">How it works</div>
+    <h2>A URL, a small app, a button press.</h2>
+    <p class="lead">Nothing runs in the background besides the plugin itself. Each key press travels this path:</p>
+    <div class="flow">
+      <div class="card"><div class="num">01</div><h3>Stream Deck plugin</h3><p>Node.js, Elgato SDK v2. A key press opens <code>claudedeck://always-allow</code>.</p></div>
+      <div class="card"><div class="num">02</div><h3>ClaudeDeck.app</h3><p>A tiny URL-scheme handler in <code>~/Applications</code>, installed by the plugin on first start.</p></div>
+      <div class="card"><div class="num">03</div><h3>axpress</h3><p>Swift helper inside the app. Walks Claude's accessibility tree and presses the matching button.</p></div>
+      <div class="card"><div class="num">04</div><h3>Claude</h3><p>The prompt is answered. Works even when Claude isn't the front window.</p></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="eyebrow">Install</div>
+    <h2>Three steps, once.</h2>
+    <div class="grid3">
+      <div class="card"><div class="num">1</div><h3>Download and double-click</h3><p><code>com.4xsdev.claude.streamDeckPlugin</code> — Stream Deck asks to install the plugin. It brings the actions, a "Claude" profile for a 15-key deck, and the helper app.</p></div>
+      <div class="card"><div class="num">2</div><h3>Grant Accessibility</h3><p>macOS asks once for <strong>ClaudeDeck</strong> under System Settings → Privacy &amp; Security → Accessibility. This is what lets it press buttons in Claude.</p></div>
+      <div class="card"><div class="num">3</div><h3>Switch to the Claude profile</h3><p>Or drag single actions from the "Claude" group onto keys of your own profile. Reply and Shortcut keys have settings in the inspector.</p></div>
+    </div>
+    <p class="meta" style="margin-top:24px">Requires the Claude desktop app for macOS. The helper is a small AppleScript + Swift bundle whose source is in the repo; it talks only to the Claude app and to status.claude.com.</p>
+  </section>
+
+  <footer>
+    <div>Pavel Kotyza · <a href="https://www.4xs.dev">4xs.dev</a> · MIT License</div>
+    <div>Not affiliated with Anthropic or Elgato. Claude is a trademark of Anthropic.</div>
+  </footer>
+</div>
+
+
+<script>
+(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}
+if(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)t='dark';
+if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
+function toggleTheme(){var r=document.documentElement,d=r.getAttribute('data-theme')==='dark';
+if(d)r.removeAttribute('data-theme');else r.setAttribute('data-theme','dark');
+try{localStorage.setItem('theme',d?'light':'dark')}catch(e){}}
+</script>
+</body>
+</html>
