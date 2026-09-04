@@ -91,7 +91,7 @@ def body(img, toggle_button=True):
   <section id="actions">
     <div class="eyebrow">Eleven actions</div>
     <h2>Drag what you need.</h2>
-    <p class="lead">The plugin adds a "Claude" group to the Stream Deck action list — the same way any other plugin does. The bundled profile is one arrangement; every key is replaceable.</p>
+    <p class="lead">The plugin adds a "ClaudeDeck" group to the Stream Deck action list — the same way any other plugin does. The bundled profile is one arrangement; every key is replaceable.</p>
     <div class="sheet"><img src="{img('actions.png')}" width="890" height="384" alt="All actions: Allow once, Allow for session, Always allow, Deny, Stop, Reply, Shortcut, Activate Claude, Claude Status, Inspect, Buy me a Ko-fi"></div>
     <table>
       <tr><td>Allow once · Allow for session · Always allow · Deny</td><td>Presses that button in the permission prompt that is currently on screen. The desktop app has no keyboard shortcuts for these, so the helper finds the button through macOS Accessibility and presses it — about 50 ms.</td></tr>
@@ -121,9 +121,9 @@ def body(img, toggle_button=True):
     <div class="eyebrow">Install</div>
     <h2>Three steps, once.</h2>
     <div class="grid3">
-      <div class="card"><div class="num">1</div><h3>Download and double-click</h3><p><code>com.4xsdev.claude.streamDeckPlugin</code> — Stream Deck asks to install the plugin. It brings the actions, a "Claude" profile for a 15-key deck, and the helper app.</p></div>
+      <div class="card"><div class="num">1</div><h3>Download and double-click</h3><p><code>com.4xsdev.claude.streamDeckPlugin</code> — Stream Deck asks to install the plugin. It brings the ClaudeDeck actions, a "Claude" profile for a 15-key deck, and the helper app.</p></div>
       <div class="card"><div class="num">2</div><h3>Grant Accessibility</h3><p>macOS asks once for <strong>ClaudeDeck</strong> under System Settings → Privacy &amp; Security → Accessibility. This is what lets it press buttons in Claude.</p></div>
-      <div class="card"><div class="num">3</div><h3>Switch to the Claude profile</h3><p>Or drag single actions from the "Claude" group onto keys of your own profile. Reply and Shortcut keys have settings in the inspector.</p></div>
+      <div class="card"><div class="num">3</div><h3>Switch to the Claude profile</h3><p>Or drag single actions from the "ClaudeDeck" group onto keys of your own profile. Reply and Shortcut keys have settings in the inspector.</p></div>
     </div>
     <p class="meta" style="margin-top:24px">Requires the Claude desktop app for macOS. The helper is a small AppleScript + Swift bundle whose source is in the repo; it talks only to the Claude app and to status.claude.com.</p>
   </section>

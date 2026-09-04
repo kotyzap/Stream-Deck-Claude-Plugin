@@ -1,6 +1,6 @@
 # Stream Deck for Claude
 
-Stream Deck plugin for the **Claude desktop app** on macOS. Answer permission prompts (Allow once / for session / always, Deny), stop a response, send canned replies, fire Claude's keyboard shortcuts, and watch status.claude.com — on physical keys.
+**ClaudeDeck** — a Stream Deck plugin for the **Claude desktop app** on macOS. Answer permission prompts (Allow once / for session / always, Deny), stop a response, send canned replies, fire Claude's keyboard shortcuts, and watch status.claude.com — on physical keys.
 
 **[Website](https://kotyzap.github.io/Stream-Deck-Claude-Plugin/) · [Download plugin](dist/com.4xsdev.claude.streamDeckPlugin)**
 
@@ -8,7 +8,7 @@ Stream Deck plugin for the **Claude desktop app** on macOS. Answer permission pr
 
 ## Install
 
-1. Download [`com.4xsdev.claude.streamDeckPlugin`](dist/com.4xsdev.claude.streamDeckPlugin) and double-click it. Stream Deck installs the **Claude** action group, a ready-made **Claude** profile (15-key layout above) and the helper app `~/Applications/ClaudeDeck.app`.
+1. Download [`com.4xsdev.claude.streamDeckPlugin`](dist/com.4xsdev.claude.streamDeckPlugin) and double-click it. Stream Deck installs the **ClaudeDeck** action group, a ready-made **Claude** profile (15-key layout above) and the helper app `~/Applications/ClaudeDeck.app`.
 2. macOS asks once for **Accessibility** access for ClaudeDeck (System Settings → Privacy & Security → Accessibility). That is what lets it press buttons in Claude.
 3. Switch to the Claude profile, or drag single actions onto your own keys.
 
