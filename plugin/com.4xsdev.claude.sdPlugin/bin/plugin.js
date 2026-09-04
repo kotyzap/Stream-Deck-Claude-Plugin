@@ -9271,6 +9271,13 @@ for (const [id, url] of Object.entries({
     "activate":      "claudedeck://activate",
     "inspect":       "claudedeck://inspect",
 })) streamDeck.actions.registerAction(new UrlAction(`${PLUGIN}.${id}`, url));
+/** Ko-fi — opens the support page. */
+class Kofi extends SingletonAction {
+    manifestId = `${PLUGIN}.kofi`;
+    onKeyDown() { streamDeck.system.openUrl("https://ko-fi.com/K3K6RR4LY"); }
+}
+
+streamDeck.actions.registerAction(new Kofi());
 streamDeck.actions.registerAction(new Reply());
 streamDeck.actions.registerAction(new Shortcut());
 streamDeck.actions.registerAction(new ClaudeStatus());

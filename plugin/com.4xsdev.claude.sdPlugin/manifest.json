@@ -1,7 +1,7 @@
 {
   "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
   "Name": "Claude",
-  "Version": "1.1.1.0",
+  "Version": "1.2.0.0",
   "Author": "Pavel Kotyza",
   "Description": "Keys for the Claude desktop app: answer permission prompts (Allow once / for session / always, Deny), Stop, canned replies, shortcuts, live status.claude.com. Requires ClaudeDeck.app (macOS). https://www.4xs.dev",
   "UUID": "com.4xsdev.claude",
@@ -200,6 +200,25 @@
       "States": [
         {
           "Image": "imgs/actions/inspect/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ]
+    },
+    {
+      "Name": "Buy me a Ko-fi",
+      "UUID": "com.4xsdev.claude.kofi",
+      "Icon": "imgs/actions/kofi/icon",
+      "Tooltip": "Enjoying the plugin? Opens ko-fi.com to support development.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "ui/kofi.html",
+      "SupportedInMultiActions": false,
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/actions/kofi/key",
           "TitleAlignment": "middle",
           "ShowTitle": false
         }

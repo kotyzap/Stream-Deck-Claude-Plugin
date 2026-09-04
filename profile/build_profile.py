@@ -7,7 +7,7 @@ import json, os, shutil, uuid, zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "build")
-PLUGIN = {"Name": "Claude", "UUID": "com.4xsdev.claude", "Version": "1.1.1.0"}
+PLUGIN = {"Name": "Claude", "UUID": "com.4xsdev.claude", "Version": "1.2.0.0"}
 
 
 def A(aid, name, **settings):

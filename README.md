@@ -16,7 +16,7 @@ Requirements: macOS 12+, Stream Deck software 6.5+, the Claude desktop app.
 
 ## Actions
 
-![All ten actions](docs/img/actions.png)
+![All actions](docs/img/actions.png)
 
 | Action | What it does |
 |---|---|
@@ -26,6 +26,7 @@ Requirements: macOS 12+, Stream Deck software 6.5+, the Claude desktop app.
 | **Shortcut** | Sends one of Claude.app's own accelerators: New chat <kbd>⌘N</kbd> · New Claude Code session <kbd>⌘⇧O</kbd> · Search <kbd>⌘⇧K</kbd> · Command palette <kbd>⌘K</kbd> · Sidebar <kbd>⌘B</kbd> · Previous / next session <kbd>⌘⇧[</kbd> <kbd>⌘⇧]</kbd> · Side chat <kbd>⌘;</kbd> |
 | **Activate Claude** | Brings the Claude app to the front. |
 | **Claude Status** | Polls `status.claude.com` every 60 s. Key colour follows the incident level; the small line names the affected component. Press opens the status page. |
+| **Buy me a Ko-fi** | Opens [ko-fi.com](https://ko-fi.com/K3K6RR4LY). Optional, obviously. |
 | **Inspect** | Writes every button label Claude exposes to `~/Library/Logs/ClaudeDeck.log` — the repair tool if Anthropic renames a button. |
 
 ![Claude Status key states](docs/img/status-states.png)
