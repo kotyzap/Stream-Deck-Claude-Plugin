@@ -1,0 +1,19 @@
+{
+  "Name": "Buy me a Ko-fi",
+  "UUID": "com.4xsdev.claude.kofi",
+  "Icon": "imgs/actions/kofi/icon",
+  "Tooltip": "Enjoying the plugin? Opens ko-fi.com to support development.",
+  "Controllers": [
+    "Keypad"
+  ],
+  "PropertyInspectorPath": "ui/kofi.html",
+  "SupportedInMultiActions": false,
+  "DisableAutomaticStates": true,
+  "States": [
+    {
+      "Image": "imgs/actions/kofi/key",
+      "TitleAlignment": "middle",
+      "ShowTitle": false
+    }
+  ]
+}

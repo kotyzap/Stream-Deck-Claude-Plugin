@@ -4,7 +4,7 @@ import os, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 REPO = "https://github.com/kotyzap/Stream-Deck-Claude-Plugin"
-DL = f"{REPO}/raw/main/dist/com.4xsdev.claude.streamDeckPlugin"
+DL = f"{REPO}/raw/main/dist/com.4xsdev.claude-kofi.streamDeckPlugin"
 
 FONTS = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400&display=swap">'
 
@@ -45,7 +45,7 @@ h2{font-size:32px;font-weight:700;margin-bottom:12px}
 .card p{margin:0;color:var(--fg2);font-size:15.5px}
 .num{font-family:"IBM Plex Mono",monospace;color:var(--accent);font-size:13px;margin-bottom:10px}
 .sheet{background:var(--deck);border-radius:16px;padding:20px;margin:0 0 28px}
-.sheet img{display:block;width:100%;max-width:890px;margin:0 auto;height:auto}
+.sheet img{display:block;width:100%;max-width:750px;margin:0 auto;height:auto}
 .states{background:var(--deck);border-radius:16px;padding:18px 20px;display:inline-block}
 .states img{display:block;height:112px;width:auto}
 table{width:100%;border-collapse:collapse;font-size:15.5px}
@@ -84,23 +84,22 @@ def body(img, toggle_button=True):
         <a class="btn" href="{DL}">{dl_icon()}Download plugin</a>
         <a class="btn ghost" href="{REPO}">Source on GitHub</a>
       </div>
-      <p class="meta" style="margin-top:16px">macOS · Stream Deck 6.5+ · one-click install: actions, a ready profile and the helper app. Free, MIT.</p>
+      <p class="meta" style="margin-top:16px">macOS · Stream Deck 6.5+ · one-click install: actions, a ready profile and the helper app. Free and open source (MIT). Also on the Elgato Marketplace; this GitHub build adds a <a href="https://ko-fi.com/K3K6RR4LY">Buy me a Ko-fi</a> key.</p>
     </div>
     <img src="{img('hero-decks.png')}" width="1600" height="1434" alt="The three bundled profiles: Stream Deck XL, Stream Deck MK.2 and Stream Deck Mini with Claude permission keys, replies, shortcuts and status">
   </div>
 
   <section id="actions">
-    <div class="eyebrow">Eleven actions</div>
+    <div class="eyebrow">Ten actions</div>
     <h2>Drag what you need.</h2>
     <p class="lead">The plugin adds a "ClaudeDeck" group to the Stream Deck action list — the same way any other plugin does. The bundled profile is one arrangement; every key is replaceable.</p>
-    <div class="sheet"><img src="{img('actions.png')}" width="890" height="384" alt="All actions: Allow once, Allow for session, Always allow, Deny, Stop, Reply, Shortcut, Activate Claude, Claude Status, Inspect, Buy me a Ko-fi"></div>
+    <div class="sheet"><img src="{img('actions.png')}" width="744" height="384" alt="All actions: Allow once, Allow for session, Always allow, Deny, Stop, Reply, Shortcut, Activate Claude, Claude Status, Inspect"></div>
     <table>
       <tr><td>Allow once · Allow for session · Always allow · Deny</td><td>Presses that button in the permission prompt that is currently on screen. The desktop app has no keyboard shortcuts for these, so the helper finds the button through macOS Accessibility and presses it — about 50 ms.</td></tr>
       <tr><td>Stop</td><td>Brings Claude to the front and presses <kbd>Esc</kbd>.</td></tr>
       <tr><td>Reply</td><td>Types a text you configure ("continue", "yes", "fix it", "commit"…) and presses Return. Claude is activated first, so it never types into the wrong window.</td></tr>
       <tr><td>Shortcut</td><td>Sends one of the app's own accelerators: new chat <kbd>⌘N</kbd>, new Claude Code session <kbd>⌘⇧O</kbd>, search <kbd>⌘⇧K</kbd>, command palette <kbd>⌘K</kbd>, sidebar <kbd>⌘B</kbd>, previous / next session <kbd>⌘⇧[</kbd> <kbd>⌘⇧]</kbd>, side chat <kbd>⌘;</kbd>.</td></tr>
       <tr><td>Claude Status</td><td>Polls status.claude.com every minute. Green, yellow, orange, red follow the incident level; the small line names the affected component. Press opens the status page.</td></tr>
-      <tr><td>Buy me a Ko-fi</td><td>Opens <a href="https://ko-fi.com/K3K6RR4LY">ko-fi.com</a> if the plugin saves you enough clicks to be worth a coffee.</td></tr>
       <tr><td>Activate Claude · Inspect</td><td>Bring the app forward; write every button label Claude exposes to a log — the repair tool for the day a button gets renamed.</td></tr>
     </table>
     <div style="margin-top:28px" class="states"><img src="{img('status-states.png')}" width="752" height="140" alt="Claude Status key in its five states: OK, Minor, Major, Critical, offline"></div>
@@ -136,7 +135,7 @@ def body(img, toggle_button=True):
   </section>
 
   <footer>
-    <div>Pavel Kotyza · <a href="https://www.4xs.dev">4xs.dev</a> · MIT License</div>
+    <div>Pavel Kotyza · <a href="https://www.4xs.dev">4xs.dev</a> · MIT License · <a href="https://ko-fi.com/K3K6RR4LY">Buy me a Ko-fi</a></div>
     <div>Not affiliated with Anthropic or Elgato. Claude is a trademark of Anthropic.</div>
   </footer>
 </div>

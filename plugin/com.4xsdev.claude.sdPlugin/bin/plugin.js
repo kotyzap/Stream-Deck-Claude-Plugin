@@ -9134,9 +9134,11 @@ async function ensureHelper() {
     }
 }
 
-function fire(url) {
+function fire(url, action) {
     execFile("open", [url], (err) => {
-        if (err) streamDeck.logger.error(`open ${url}: ${err.message}`);
+        if (!err) return;
+        streamDeck.logger.error(`open ${url}: ${err.message}`);
+        action?.showAlert();   // ClaudeDeck.app missing or URL scheme not registered
     });
 }
 
@@ -9161,7 +9163,7 @@ class UrlAction extends SingletonAction {
         this.manifestId = manifestId;
         this.url = url;
     }
-    onKeyDown() { fire(this.url); }
+    onKeyDown(ev) { fire(this.url, ev.action); }
 }
 
 /** Reply — types the configured text into Claude and presses Return. */
@@ -9172,7 +9174,7 @@ class Reply extends SingletonAction {
     onKeyDown(ev) {
         const text = (ev.payload.settings.text ?? "continue").trim();
         if (!text) return;
-        fire(`claudedeck://type/${encodeURIComponent(text)}`);
+        fire(`claudedeck://type/${encodeURIComponent(text)}`, ev.action);
     }
     #paint(a, s) { a.setImage(labelledKey("›", "#d97757", s.text?.trim() || "continue")); }
 }
@@ -9194,7 +9196,7 @@ class Shortcut extends SingletonAction {
     onDidReceiveSettings(ev) { this.#paint(ev.action, ev.payload.settings); }
     onKeyDown(ev) {
         const sc = SHORTCUTS[ev.payload.settings.shortcut] ?? SHORTCUTS["new-chat"];
-        fire(`claudedeck://hotkey/${encodeURIComponent(sc.combo)}`);
+        fire(`claudedeck://hotkey/${encodeURIComponent(sc.combo)}`, ev.action);
     }
     #paint(a, s) { a.setImage(labelledKey("⌘", "#8e8e93", (SHORTCUTS[s.shortcut] ?? SHORTCUTS["new-chat"]).title)); }
 }
@@ -9271,7 +9273,7 @@ for (const [id, url] of Object.entries({
     "activate":      "claudedeck://activate",
     "inspect":       "claudedeck://inspect",
 })) streamDeck.actions.registerAction(new UrlAction(`${PLUGIN}.${id}`, url));
-/** Ko-fi — opens the support page. */
+/** Ko-fi — GitHub build only (Marketplace forbids sponsor links inside plugins; package.sh --kofi adds it). */
 class Kofi extends SingletonAction {
     manifestId = `${PLUGIN}.kofi`;
     onKeyDown() { streamDeck.system.openUrl("https://ko-fi.com/K3K6RR4LY"); }
