@@ -9,9 +9,9 @@
   "Category": "ClaudeDeck",
   "CategoryIcon": "imgs/plugin/category",
   "CodePath": "bin/plugin.js",
-  "SDKVersion": 2,
+  "SDKVersion": 3,
   "Software": {
-    "MinimumVersion": "6.5"
+    "MinimumVersion": "6.9"
   },
   "OS": [
     {
@@ -211,21 +211,18 @@
       "Name": "Claude",
       "DeviceType": 0,
       "Readonly": false,
-      "DontAutoSwitchToProfile": true,
       "AutoInstall": true
     },
     {
       "Name": "Claude Mini",
       "DeviceType": 1,
       "Readonly": false,
-      "DontAutoSwitchToProfile": true,
       "AutoInstall": true
     },
     {
       "Name": "Claude XL",
       "DeviceType": 2,
       "Readonly": false,
-      "DontAutoSwitchToProfile": true,
       "AutoInstall": true
     }
   ]
