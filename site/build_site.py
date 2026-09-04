@@ -52,11 +52,12 @@ table{width:100%;border-collapse:collapse;font-size:15.5px}
 td{padding:10px 0;border-top:1px solid var(--line);vertical-align:top}
 td:first-child{font-weight:500;white-space:nowrap;padding-right:22px}
 td:last-child{color:var(--fg2)}
+.decks{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,8fr);gap:24px;align-items:end}.decks img{width:100%;height:auto;display:block}
 .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
 .flow .card{position:relative}
 footer{padding:36px 0 48px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:14px;color:var(--fg2)}
 footer a{color:var(--fg2)}footer a:hover{color:var(--fg)}
-@media (max-width:820px){.hero{grid-template-columns:1fr;padding-top:24px}.hero h1{font-size:38px}.grid3,.flow{grid-template-columns:1fr}.navlinks span{display:none}}
+@media (max-width:820px){.decks{grid-template-columns:1fr}.hero{grid-template-columns:1fr;padding-top:24px}.hero h1{font-size:38px}.grid3,.flow{grid-template-columns:1fr}.navlinks span{display:none}}
 """
 
 def gh_icon():
@@ -72,7 +73,7 @@ def body(img, toggle_button=True):
 <div class="wrap">
   <nav>
     <a class="brand" href="#"><span class="mark">C</span><span>Stream Deck for Claude</span></a>
-    <div class="navlinks"><a href="#actions">Actions</a><a href="#how">How it works</a><a href="#install">Install</a><a href="{REPO}">{gh_icon()}</a>{tog}</div>
+    <div class="navlinks"><a href="#actions">Actions</a><a href="#decks">Decks</a><a href="#how">How it works</a><a href="#install">Install</a><a href="{REPO}">{gh_icon()}</a>{tog}</div>
   </nav>
 
   <div class="hero">
@@ -105,6 +106,16 @@ def body(img, toggle_button=True):
     <div style="margin-top:28px" class="states"><img src="{img('status-states.png')}" width="752" height="140" alt="Claude Status key in its five states: OK, Minor, Major, Critical, offline"></div>
   </section>
 
+  <section id="decks">
+    <div class="eyebrow">Every deck size</div>
+    <h2>Mini, MK.2, XL — a profile for each.</h2>
+    <p class="lead">The installer carries three ready-made profiles; Stream Deck installs the one that matches your device. Six keys on the Mini, the full set with spare replies and every shortcut on the XL.</p>
+    <div class="decks">
+      <img src="{img('deck-mini.png')}" alt="Stream Deck Mini profile: Allow once, Always allow, Deny; Stop, continue, Claude Status">
+      <img src="{img('deck-xl.png')}" alt="Stream Deck XL profile: permission row with status, seven replies, eight shortcuts, Inspect">
+    </div>
+  </section>
+
   <section id="how">
     <div class="eyebrow">How it works</div>
     <h2>A URL, a small app, a button press.</h2>
@@ -121,7 +132,7 @@ def body(img, toggle_button=True):
     <div class="eyebrow">Install</div>
     <h2>Three steps, once.</h2>
     <div class="grid3">
-      <div class="card"><div class="num">1</div><h3>Download and double-click</h3><p><code>com.4xsdev.claude.streamDeckPlugin</code> — Stream Deck asks to install the plugin. It brings the ClaudeDeck actions, a "Claude" profile for a 15-key deck, and the helper app.</p></div>
+      <div class="card"><div class="num">1</div><h3>Download and double-click</h3><p><code>com.4xsdev.claude.streamDeckPlugin</code> — Stream Deck asks to install the plugin. It brings the ClaudeDeck actions, a ready profile for your deck (Mini, MK.2 or XL), and the helper app.</p></div>
       <div class="card"><div class="num">2</div><h3>Grant Accessibility</h3><p>macOS asks once for <strong>ClaudeDeck</strong> under System Settings → Privacy &amp; Security → Accessibility. This is what lets it press buttons in Claude.</p></div>
       <div class="card"><div class="num">3</div><h3>Switch to the Claude profile</h3><p>Or drag single actions from the "ClaudeDeck" group onto keys of your own profile. Reply and Shortcut keys have settings in the inspector.</p></div>
     </div>

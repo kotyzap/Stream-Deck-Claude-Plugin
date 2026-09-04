@@ -1,7 +1,7 @@
 {
   "artboards": [
-    { "file": "Main.dc.html", "title": "Light", "x": 0, "y": 0, "w": 1280, "h": 3150 },
-    { "file": "Dark.dc.html", "title": "Dark", "x": 1400, "y": 0, "w": 1280, "h": 3150 }
+    { "file": "Main.dc.html", "title": "Light", "x": 0, "y": 0, "w": 1280, "h": 3900 },
+    { "file": "Dark.dc.html", "title": "Dark", "x": 1400, "y": 0, "w": 1280, "h": 3900 }
   ],
   "launch": { "view": "canvas" }
 }
