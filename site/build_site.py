@@ -26,11 +26,11 @@ nav{display:flex;align-items:center;justify-content:space-between;height:68px}
 .toggle{width:40px;height:26px;border-radius:13px;border:1px solid var(--line);background:var(--bg2);position:relative;cursor:pointer;padding:0}
 .toggle::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--fg);transition:left .15s}
 [data-theme=dark] .toggle::after{left:17px}
-.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:48px;align-items:center;padding:56px 0 64px}
-.hero h1{font-size:48px;line-height:1.05;font-weight:700}
+.hero{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:40px;align-items:center;padding:48px 0 56px}
+.hero h1{font-size:44px;line-height:1.05;font-weight:700}
 .hero p{font-size:19px;color:var(--fg2);margin:20px 0 28px}
-.cta{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--accent-fg);font-weight:500;padding:13px 20px;border-radius:10px;font-size:16px}
+.cta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-fg);font-weight:500;padding:12px 16px;border-radius:10px;font-size:15px}
 .btn:hover{color:var(--accent-fg);filter:brightness(1.08)}
 .btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
 .meta{font-size:14px;color:var(--fg2)}
@@ -86,7 +86,7 @@ def body(img, toggle_button=True):
       </div>
       <p class="meta" style="margin-top:16px">macOS · Stream Deck 6.5+ · one-click install: actions, a ready profile and the helper app. Free, MIT.</p>
     </div>
-    <img src="{img('deck.png')}" width="976" height="644" alt="Stream Deck with the default Claude profile: Allow once, Allow session, Always allow, Deny, Stop; continue, yes, fix it, commit, Claude Status; Claude, New chat, New session, Search, Inspect">
+    <img src="{img('hero-decks.png')}" width="1600" height="1434" alt="The three bundled profiles: Stream Deck XL, Stream Deck MK.2 and Stream Deck Mini with Claude permission keys, replies, shortcuts and status">
   </div>
 
   <section id="actions">
@@ -109,11 +109,7 @@ def body(img, toggle_button=True):
   <section id="decks">
     <div class="eyebrow">Every deck size</div>
     <h2>Mini, MK.2, XL — a profile for each.</h2>
-    <p class="lead">The installer carries three ready-made profiles; Stream Deck installs the one that matches your device. Six keys on the Mini, the full set with spare replies and every shortcut on the XL.</p>
-    <div class="decks">
-      <img src="{img('deck-mini.png')}" alt="Stream Deck Mini profile: Allow once, Always allow, Deny; Stop, continue, Claude Status">
-      <img src="{img('deck-xl.png')}" alt="Stream Deck XL profile: permission row with status, seven replies, eight shortcuts, Inspect">
-    </div>
+    <p class="lead">The installer carries three ready-made profiles — <strong>Claude</strong> (MK.2, 5×3), <strong>Claude Mini</strong> (3×2) and <strong>Claude XL</strong> (8×4) — and Stream Deck installs only the one that matches your device. Six essentials on the Mini; the full set with spare replies and every shortcut on the XL.</p>
   </section>
 
   <section id="how">
