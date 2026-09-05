@@ -176,7 +176,7 @@ class Kofi extends SingletonAction {
     onKeyDown() { streamDeck.system.openUrl("https://ko-fi.com/K3K6RR4LY"); }
 }
 
-streamDeck.actions.registerAction(new Kofi());
+try { streamDeck.actions.registerAction(new Kofi()); } catch { /* plain (Marketplace) manifest has no Ko-fi action */ }
 streamDeck.actions.registerAction(new Reply());
 streamDeck.actions.registerAction(new Shortcut());
 streamDeck.actions.registerAction(new ClaudeStatus());
