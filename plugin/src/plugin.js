@@ -43,7 +43,7 @@ function fire(url, action) {
 const escXml = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 function labelledKey(glyph, color, title) {
     const lines = String(title).split("\n").slice(0, 2);
-    const size = Math.max(...lines.map((l) => l.length)) <= 8 ? 24 : 20;
+    const size = Math.max(...lines.map((l) => l.length)) <= 8 ? 25 : 21;
     const y0 = lines.length === 1 ? 104 : 96;
     const text = lines.map((l, i) =>
         `<text x="72" y="${y0 + i * (size + 2)}" font-family="Helvetica, Arial, sans-serif" font-size="${size}" font-weight="700" fill="#f2f2f7" text-anchor="middle">${escXml(l)}</text>`).join("");
@@ -69,11 +69,11 @@ class Reply extends SingletonAction {
     onWillAppear(ev) { this.#paint(ev.action, ev.payload.settings); }
     onDidReceiveSettings(ev) { this.#paint(ev.action, ev.payload.settings); }
     onKeyDown(ev) {
-        const text = (ev.payload.settings.text ?? "continue").trim();
+        const text = (ev.payload.settings.text ?? "Continue").trim();
         if (!text) return;
         fire(`claudedeck://type/${encodeURIComponent(text)}`, ev.action);
     }
-    #paint(a, s) { a.setImage(labelledKey("›", "#d97757", s.text?.trim() || "continue")); }
+    #paint(a, s) { a.setImage(labelledKey("›", "#d97757", s.text?.trim() || "Continue")); }
 }
 
 /** Shortcut — sends one of Claude.app's own accelerators (Claude is activated first). */
