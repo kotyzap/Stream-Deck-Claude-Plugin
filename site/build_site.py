@@ -148,6 +148,7 @@ def body(img, toggle_button=True):
       <a class="card cardlink" href="https://kotyzap.github.io/Stream-Deck-ACS-Edge-Plugin/"><h3>Deck for AXIS Camera Station Edge ↗</h3><p>Recording playback, PTZ and view controls for ACS Edge</p></a>
       <a class="card cardlink" href="https://kotyzap.github.io/Stream-Deck-ACS-Pro-Plugin/"><h3>Deck for AXIS Camera Station Pro &amp; 5 ↗</h3><p>Playback, cameras, PTZ presets and any hotkey for ACS 5 &amp; Pro</p></a>
       <a class="card cardlink" href="https://kotyzap.github.io/Stream-Deck-Genetec-Plugin/"><h3>Deck for Genetec Security Desk ↗</h3><p>Playback, alarms, tiles, PTZ, doors and any camera by logical ID for Security Desk</p></a>
+      <a class="card cardlink" href="https://kotyzap.github.io/Stream-Deck-Milestone-Plugin/"><h3>Deck for Milestone XProtect ↗</h3><p>Playback, evidence, PTZ, views and any camera or view by number for XProtect Smart Client</p></a>
     </div>
   </section>
 
