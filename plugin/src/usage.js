@@ -35,10 +35,32 @@ const sh = (cmd, args) =>
     new Promise((res, rej) => execFile(cmd, args, { timeout: 8000 }, (e, out) => (e ? rej(e) : res(out))));
 
 // ---------------------------------------------------------------- data
+/**
+ * The OAuth token Claude Code keeps in the login keychain.
+ *
+ * Every failure here means the same thing to the user — nobody has signed in to
+ * Claude Code on this Mac — so they all raise "signin". Letting them fall through
+ * as generic errors reported them as "offline", which sends someone to check
+ * their wifi when what they actually need is to sign in. That is the whole
+ * difference between a useful message and a misleading one.
+ */
 async function accessToken() {
-    const raw = await sh("security", ["find-generic-password", "-s", KEYCHAIN_SERVICE, "-w"]);
-    const tok = JSON.parse(raw)?.claudeAiOauth?.accessToken;
-    if (!tok) throw new Error("no accessToken in keychain item");
+    let raw;
+    try {
+        raw = await sh("security", ["find-generic-password", "-s", KEYCHAIN_SERVICE, "-w"]);
+    } catch {
+        // No such keychain item: Claude Code has never signed in here (or was
+        // never installed). `security` also exits non-zero if the user denies
+        // access to the item, which is the same answer as far as we are concerned.
+        throw new Error("signin");
+    }
+    let tok;
+    try {
+        tok = JSON.parse(raw)?.claudeAiOauth?.accessToken;
+    } catch {
+        throw new Error("signin");   // item present but not the shape we expect
+    }
+    if (!tok) throw new Error("signin");
     return tok;
 }
 
@@ -52,7 +74,9 @@ async function readUsage() {
         },
         signal: AbortSignal.timeout(10_000),
     });
-    if (res.status === 401 || res.status === 403) throw new Error("auth");
+    // A rejected or expired token is the same instruction as never having signed
+    // in, so it carries the same code rather than a second wording for it.
+    if (res.status === 401 || res.status === 403) throw new Error("signin");
     if (res.status === 429) {
         const retry = Number(res.headers.get("retry-after"));
         const err = new Error("throttled");
@@ -282,6 +306,15 @@ class UsageMonitor {
     bars = null;
     note = "loading…";
 
+    /**
+     * Is there an actual chart to draw?
+     *
+     * The idle overlay asks before taking the deck over. A row of empty bars, or
+     * a mostly blank deck with one word on it, is worse than simply not doing
+     * anything — the keys the user put there still work and still say what they do.
+     */
+    get hasData() { return Array.isArray(this.bars) && this.bars.length > 0; }
+
     subscribe(fn) {
         this.#subs.add(fn);
         if (this.#subs.size === 1) this.#schedule(0);
@@ -316,7 +349,7 @@ class UsageMonitor {
             this.note = bars.length ? null : "no limits";
         } catch (e) {
             streamDeck.logger.warn(`usage poll failed: ${e.message}`);
-            if (e.message === "auth") { this.bars = null; this.note = "sign in"; }
+            if (e.message === "signin") { this.bars = null; this.note = "sign in"; }
             else if (this.bars) { /* keep the last good chart — a blip is not worth blanking it */ }
             else this.note = e.message === "throttled" ? "easy…" : "offline";
             if (e.message === "throttled") {
@@ -414,10 +447,32 @@ export class IdleOverlay {
 
     #show() {
         if (!this.#slots.size || this.#on) return;
-        this.#on = true;
-        // subscribe only now: while the user is working the deck we have no reason to poll at all
-        this.#unsub ??= monitor.subscribe(() => { if (this.#on) this.#paint(); });
+        // Subscribe only now: while the user is working the deck we have no reason to poll at all.
+        // The callback also lets the chart appear the moment data arrives, if the
+        // first attempt found none.
+        this.#unsub ??= monitor.subscribe(() => this.#consider());
         monitor.refresh();
+        this.#consider();
+    }
+
+    /**
+     * Take the deck over only if there is something worth showing.
+     *
+     * Signed out, offline or throttled, this stays off. Covering every key with
+     * a blank chart and one word of explanation is strictly worse than leaving
+     * the deck alone: the keys the user chose still work and still say what they
+     * do. The Claude Usage key itself does show the reason — that one was placed
+     * deliberately, so it owes an explanation.
+     */
+    #consider() {
+        if (!monitor.hasData) {
+            if (this.#on) {
+                this.#on = false;
+                for (const slot of this.#slots.values()) { try { slot.restore(); } catch { /* keep going */ } }
+            }
+            return;   // stay subscribed; engage as soon as a poll brings real numbers
+        }
+        this.#on = true;
         this.#paint();
     }
 

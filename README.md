@@ -16,7 +16,9 @@ Leave the deck alone for 30 seconds and every key repaints as one chart: **sessi
 
 Each bar carries a vertical **on-pace mark**: how far through that window you are. Bar behind the mark means you are under pace; past it means you are burning faster than the window allows, and the bar turns red. The right-hand caption is the forecast — `~8% left` at this rate, or `limit 20h 11m` if you are on course to run out before the reset.
 
-Numbers come from the same place the desktop app's usage popup gets them: your existing Claude Code sign-in on this Mac, read locally. Nothing is sent anywhere. If you have never signed in to Claude Code the keys read `sign in`.
+Numbers come from the same place the desktop app's usage popup gets them: your existing Claude Code sign-in on this Mac, read locally. Nothing is sent anywhere.
+
+**If there is nothing to show, the deck is left alone.** No Claude Code sign-in on this Mac, no network, or the endpoint asking us to back off — the 30-second chart simply does not take over, because covering every key with a blank chart is worse than leaving the keys you chose in place. The **Claude Usage** key itself still explains why: `sign in`, `offline` or `easy…`. That key you put there on purpose, so it owes you an answer.
 
 ## Install
 

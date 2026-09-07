@@ -1,9 +1,9 @@
 {
   "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
   "Name": "Deck for Claude",
-  "Version": "1.6.7.0",
+  "Version": "1.6.8.0",
   "Author": "Pavel Kotyza",
-  "Description": "Deck for Claude — keys for the Claude desktop app (Cowork, Code, Chat): answer permission prompts (Allow once / for session / always, Deny), Stop, canned replies, shortcuts, live status.claude.com, and a usage chart that takes over the deck when idle. Requires the bundled ClaudeDeck.app helper (macOS). Independent project, not affiliated with Anthropic. https://www.4xs.dev",
+  "Description": "Deck for Claude \u2014 keys for the Claude desktop app (Cowork, Code, Chat): answer permission prompts (Allow once / for session / always, Deny), Stop, canned replies, shortcuts, live status.claude.com, and a usage chart that takes over the deck when idle. Requires the bundled ClaudeDeck.app helper (macOS). Independent project, not affiliated with Anthropic. https://www.4xs.dev",
   "UUID": "com.4xsdev.claude",
   "Icon": "imgs/plugin/marketplace",
   "Category": "Deck for Claude",
@@ -27,7 +27,7 @@
       "Name": "Allow once",
       "UUID": "com.4xsdev.claude.allow-once",
       "Icon": "imgs/actions/allow-once/icon",
-      "Tooltip": "Press “Allow once” in the current Claude permission prompt.",
+      "Tooltip": "Press \u201cAllow once\u201d in the current Claude permission prompt.",
       "Controllers": [
         "Keypad"
       ],
@@ -45,7 +45,7 @@
       "Name": "Allow for session",
       "UUID": "com.4xsdev.claude.allow-session",
       "Icon": "imgs/actions/allow-session/icon",
-      "Tooltip": "Press “Allow for session” in the current Claude permission prompt.",
+      "Tooltip": "Press \u201cAllow for session\u201d in the current Claude permission prompt.",
       "Controllers": [
         "Keypad"
       ],
@@ -63,7 +63,7 @@
       "Name": "Always allow",
       "UUID": "com.4xsdev.claude.always-allow",
       "Icon": "imgs/actions/always-allow/icon",
-      "Tooltip": "Press “Always allow” in the current Claude permission prompt.",
+      "Tooltip": "Press \u201cAlways allow\u201d in the current Claude permission prompt.",
       "Controllers": [
         "Keypad"
       ],
@@ -81,7 +81,7 @@
       "Name": "Deny",
       "UUID": "com.4xsdev.claude.deny",
       "Icon": "imgs/actions/deny/icon",
-      "Tooltip": "Press “Deny” in the current Claude permission prompt.",
+      "Tooltip": "Press \u201cDeny\u201d in the current Claude permission prompt.",
       "Controllers": [
         "Keypad"
       ],
@@ -136,7 +136,7 @@
       "Name": "Shortcut",
       "UUID": "com.4xsdev.claude.shortcut",
       "Icon": "imgs/actions/shortcut/icon",
-      "Tooltip": "Send one of Claude.app’s keyboard shortcuts (new chat, new session, search…).",
+      "Tooltip": "Send one of Claude.app\u2019s keyboard shortcuts (new chat, new session, search\u2026).",
       "Controllers": [
         "Keypad"
       ],
@@ -210,7 +210,7 @@
       "Name": "Inspect",
       "UUID": "com.4xsdev.claude.inspect",
       "Icon": "imgs/actions/inspect/icon",
-      "Tooltip": "Log every button label in Claude’s windows to ~/Library/Logs/ClaudeDeck.log (for fixing renamed buttons).",
+      "Tooltip": "Log every button label in Claude\u2019s windows to ~/Library/Logs/ClaudeDeck.log (for fixing renamed buttons).",
       "Controllers": [
         "Keypad"
       ],
