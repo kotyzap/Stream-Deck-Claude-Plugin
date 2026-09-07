@@ -24,15 +24,35 @@ nav{display:flex;align-items:center;justify-content:space-between;height:68px}
 .toggle{width:40px;height:26px;border-radius:13px;border:1px solid var(--line);background:var(--bg2);position:relative;cursor:pointer;padding:0}
 .toggle::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--fg);transition:left .15s}
 [data-theme=dark] .toggle::after{left:17px}
-.hero{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:40px;align-items:center;padding:48px 0 56px}
-.hero h1{font-size:44px;line-height:1.05;font-weight:700}
-.hero p{font-size:19px;color:var(--fg2);margin:20px 0 28px}
+.hero{padding:48px 0 28px}
+/* No width cap: the copy runs the full page width, same as everything else.
+   The lead paragraph keeps a reading measure — a 1040px line of 17px text is
+   about 115 characters, which is past where the eye loses its place. */
+.herocopy p{max-width:none}
+.herocopy .lead2{max-width:none}
+ /* One line. There is no CSS text-fit, so the size is chosen to fit the
+    headline's 36 characters inside the 984px content width with margin to
+    spare, and nowrap is lifted on narrow screens where it would overflow. */
+.hero h1{font-size:clamp(30px,4.2vw,49px);line-height:1.05;font-weight:700;max-width:none;white-space:nowrap}
+.hero p{font-size:20px;color:var(--fg2);margin:22px 0 30px;max-width:none}
 .cta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-fg);font-weight:500;padding:12px 16px;border-radius:10px;font-size:15px}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--accent-fg);font-weight:600;padding:15px 24px;border-radius:11px;font-size:17px}
 .btn:hover{color:var(--accent-fg);filter:brightness(1.08)}
 .btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
 .meta{font-size:14px;color:var(--fg2)}
 .hero img{width:100%;height:auto;display:block}
+/* The hero deck. Full page width so a 5x3 deck renders its keys around 130px
+   and every label is readable — that legibility is the whole point of the image.
+   No panel behind it: the render already carries its own deck body and margin,
+   and wrapping that in a second frame just shrinks the keys again. */
+.herodeck{margin:0 0 52px}
+.herodeck img{display:block;width:100%;height:auto}
+.deckshots{display:grid;gap:36px;margin-top:8px}
+.deckshots figure{margin:0}
+.deckshots img{display:block;width:100%;height:auto}
+/* The Mini is six keys — at full page width they would be absurdly large. */
+.deckshots figure.small img{max-width:430px}
+.deckshots figcaption{margin-top:12px;font-size:13px;color:var(--fg2)}
 section{padding:56px 0;border-top:1px solid var(--line)}
 .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
 h2{font-size:32px;font-weight:700;margin-bottom:12px}
@@ -43,7 +63,7 @@ h2{font-size:32px;font-weight:700;margin-bottom:12px}
 .card p{margin:0;color:var(--fg2);font-size:15.5px}
 .num{font-family:"IBM Plex Mono",monospace;color:var(--accent);font-size:13px;margin-bottom:10px}
 .sheet{background:var(--deck);border-radius:16px;padding:20px;margin:0 0 28px}
-.sheet img{display:block;width:100%;max-width:750px;margin:0 auto;height:auto}
+.sheet img{display:block;width:100%;max-width:920px;margin:0 auto;height:auto}
 .states{background:var(--deck);border-radius:16px;padding:18px 20px;display:inline-block}
 .states img{display:block;height:112px;width:auto}
 table{width:100%;border-collapse:collapse;font-size:15.5px}
@@ -55,7 +75,8 @@ td:last-child{color:var(--fg2)}
 .flow .card{position:relative}
 footer{padding:36px 0 48px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:14px;color:var(--fg2)}
 footer a{color:var(--fg2)}footer a:hover{color:var(--fg)}
-@media (max-width:820px){.decks{grid-template-columns:1fr}.hero{grid-template-columns:1fr;padding-top:24px}.hero h1{font-size:38px}.grid3,.flow{grid-template-columns:1fr}.navlinks span{display:none}}
+@media (max-width:1000px){.hero h1{white-space:normal}}
+@media (max-width:820px){.decks{grid-template-columns:1fr}.hero{padding-top:24px}.hero h1{font-size:38px}.grid3,.flow,.deckshots{grid-template-columns:1fr}.navlinks span{display:none}}
 
 .cardlink{display:block;text-decoration:none;color:inherit;transition:border-color .15s}
 .cardlink:hover{border-color:var(--accent)}
@@ -71,7 +92,7 @@ footer a{color:var(--fg2)}footer a:hover{color:var(--fg)}
   </nav>
 
   <div class="hero">
-    <div>
+    <div class="herocopy">
       <h1>Answer Claude from your Stream Deck.</h1>
       <p>Allow once, allow always, deny, stop, "continue" — the prompts you answer fifty times a day, on physical keys. Plus Claude's own shortcuts, a live status.claude.com light, and your usage budget on the whole deck when you step away.</p>
       <div class="cta">
@@ -80,14 +101,20 @@ footer a{color:var(--fg2)}footer a:hover{color:var(--fg)}
       </div>
       <p class="meta" style="margin-top:16px">macOS · Stream Deck 6.9+ · one-click install: actions, a ready profile and the helper app. Free and open source (MIT). Also on the Elgato Marketplace; this GitHub build adds a <a href="https://ko-fi.com/K3K6RR4LY">Buy me a Ko-fi</a> key.</p>
     </div>
-    <img src="img/hero-decks.png" width="1600" height="1434" alt="The three bundled profiles: Stream Deck XL, Stream Deck MK.2 and Stream Deck Mini with Claude permission keys, replies, shortcuts and status">
+  </div>
+
+  <!-- The keys are the product. Shown at the full width of the page, one deck
+       rather than four scaled-down ones, because a hero that renders every key
+       at 40px tells a visitor nothing about what they would be pressing. -->
+  <div class="herodeck">
+    <img src="img/deck-hero.png" width="778" height="554" alt="A Stream Deck MK.2 running the bundled Claude profile: Allow once, Allow session, Always allow, Deny and Stop across the top row; Continue, Yes, Fix it, Commit and a green status light on the second; Claude, New chat, New session, Search and a usage tile on the third">
   </div>
 
   <section id="usage">
     <div class="eyebrow">Token budget</div>
     <h2>Walk away, and the deck tells you what's left.</h2>
     <p class="lead">Thirty seconds without a press and every key becomes one chart — session, weekly and the per-model cap, a limit per row, the row's full width being 0 to 100%. Touch any key and your layout is back; that first press is swallowed, so waking the deck can never fire Allow or Deny. The Claude Usage key toggles the same view on demand.</p>
-    <div class="sheet"><img src="img/deck-usage.png" width="976" height="644" alt="A Stream Deck MK.2 showing three usage bars across its keys: session 34%, weekly 68%, and a red Fable bar at 86% that is past its on-pace mark"></div>
+    <div class="sheet"><img src="img/deck-usage-crop.png" width="774" height="550" alt="A Stream Deck MK.2 showing three usage bars across its keys: session 34%, weekly 68%, and a red Fable bar at 86% that is past its on-pace mark"></div>
     <table>
       <tr><td>The vertical mark</td><td>How far through that window you already are. Bar behind the mark means you are under pace; past it means you are burning faster than the window allows, and the bar turns red.</td></tr>
       <tr><td>The caption</td><td>Where you land at this rate — <code>~8% left</code> at the reset, or <code>limit 20h 11m</code> if you are on course to run out before it.</td></tr>
@@ -116,6 +143,10 @@ footer a{color:var(--fg2)}footer a:hover{color:var(--fg)}
     <div class="eyebrow">Every deck size</div>
     <h2>Mini, MK.2, XL — a profile for each.</h2>
     <p class="lead">The installer carries three ready-made profiles — <strong>Claude</strong> (MK.2, 5×3), <strong>Claude Mini</strong> (3×2) and <strong>Claude XL</strong> (8×4) — and Stream Deck installs only the one that matches your device. Six essentials on the Mini; the full set with spare replies and every shortcut on the XL. The MK.2 and XL layouts keep one key for Claude Usage — the Mini spends all six on controls and relies on the idle chart instead.</p>
+    <div class="deckshots">
+      <figure><img src="img/deck-xl-crop.png" width="1218" height="712" alt="Stream Deck XL with the Claude XL profile across 32 keys"><figcaption>Claude XL — 8×4</figcaption></figure>
+      <figure class="small"><img src="img/deck-mini-crop.png" width="478" height="390" alt="Stream Deck Mini with the six-key Claude Mini profile"><figcaption>Claude Mini — 3×2</figcaption></figure>
+    </div>
   </section>
 
   <section id="how">
