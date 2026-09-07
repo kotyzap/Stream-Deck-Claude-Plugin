@@ -8,11 +8,15 @@ import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { ClaudeUsage, IdleOverlay } from "./usage.js";
 
 const PLUGIN = "com.4xsdev.claude";
 const HELPER = join(homedir(), "Applications", "ClaudeDeck.app");
 const BUNDLED_HELPER = join(process.cwd(), "resources", "ClaudeDeck.app");
 const LSREGISTER = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
+
+/** The fake screensaver: every key below registers with it and yields the deck when idle. */
+const overlay = new IdleOverlay();
 
 const sh = (cmd, args) => new Promise((res, rej) => execFile(cmd, args, (e, out) => (e ? rej(e) : res(out))));
 
@@ -48,7 +52,7 @@ function labelledKey(glyph, color, title) {
     const text = lines.map((l, i) =>
         `<text x="72" y="${y0 + i * (size + 2)}" font-family="Helvetica, Arial, sans-serif" font-size="${size}" font-weight="700" fill="#f2f2f7" text-anchor="middle">${escXml(l)}</text>`).join("");
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144">
-  <rect width="144" height="144" rx="18" fill="#1c1c1e"/><rect width="144" height="10" fill="${color}"/>
+  <rect width="144" height="144" fill="#000"/><rect width="144" height="144" rx="18" fill="#1c1c1e"/><rect width="144" height="10" fill="${color}"/>
   <text x="72" y="62" font-family="Helvetica, Arial, sans-serif" font-size="46" font-weight="700" fill="${color}" text-anchor="middle">${escXml(glyph)}</text>${text}</svg>`;
     return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;
 }
@@ -59,21 +63,44 @@ class UrlAction extends SingletonAction {
         super();
         this.manifestId = manifestId;
         this.url = url;
+        // Restore by explicit path rather than setImage()'s revert-to-manifest, so the repaint
+        // is unambiguous — these PNGs are fully opaque, unlike the SVG tiles.
+        this.art = `imgs/actions/${manifestId.slice(PLUGIN.length + 1)}/key.png`;
     }
-    onKeyDown(ev) { fire(this.url, ev.action); }
+    onWillAppear(ev) {
+        overlay.register(ev.action, ev.payload.coordinates,
+            () => { try { ev.action.setImage(this.art)?.catch?.(() => {}); } catch { /* gone */ } });
+    }
+    onWillDisappear(ev) { overlay.unregister(ev.action.id); }
+    onKeyDown(ev) {
+        if (overlay.wake()) return;   // the press only woke the deck — never fire on a wake tap
+        fire(this.url, ev.action);
+    }
 }
 
 /** Reply — types the configured text into Claude and presses Return. */
 class Reply extends SingletonAction {
     manifestId = `${PLUGIN}.reply`;
-    onWillAppear(ev) { this.#paint(ev.action, ev.payload.settings); }
-    onDidReceiveSettings(ev) { this.#paint(ev.action, ev.payload.settings); }
+    #settings = new Map();   // action.id → latest settings, so the overlay restores the current label
+    onWillAppear(ev) {
+        this.#settings.set(ev.action.id, ev.payload.settings);
+        if (!overlay.isOn) this.#paint(ev.action, ev.payload.settings);
+        overlay.register(ev.action, ev.payload.coordinates,
+            () => this.#paint(ev.action, this.#settings.get(ev.action.id) ?? {}));
+    }
+    onWillDisappear(ev) { this.#settings.delete(ev.action.id); overlay.unregister(ev.action.id); }
+    onDidReceiveSettings(ev) {
+        this.#settings.set(ev.action.id, ev.payload.settings);
+        // Stream Deck fires this while its window is open; repainting now would stomp the chart.
+        if (!overlay.isOn) this.#paint(ev.action, ev.payload.settings);
+    }
     onKeyDown(ev) {
+        if (overlay.wake()) return;
         const text = (ev.payload.settings.text ?? "Continue").trim();
         if (!text) return;
         fire(`claudedeck://type/${encodeURIComponent(text)}`, ev.action);
     }
-    #paint(a, s) { a.setImage(labelledKey("›", "#d97757", s.text?.trim() || "Continue")); }
+    #paint(a, s) { try { a.setImage(labelledKey("›", "#d97757", s.text?.trim() || "Continue"))?.catch?.(() => {}); } catch { /* gone */ } }
 }
 
 /** Shortcut — sends one of Claude.app's own accelerators (Claude is activated first). */
@@ -89,13 +116,24 @@ const SHORTCUTS = {
 };
 class Shortcut extends SingletonAction {
     manifestId = `${PLUGIN}.shortcut`;
-    onWillAppear(ev) { this.#paint(ev.action, ev.payload.settings); }
-    onDidReceiveSettings(ev) { this.#paint(ev.action, ev.payload.settings); }
+    #settings = new Map();   // action.id → latest settings, so the overlay restores the current glyph
+    onWillAppear(ev) {
+        this.#settings.set(ev.action.id, ev.payload.settings);
+        if (!overlay.isOn) this.#paint(ev.action, ev.payload.settings);
+        overlay.register(ev.action, ev.payload.coordinates,
+            () => this.#paint(ev.action, this.#settings.get(ev.action.id) ?? {}));
+    }
+    onWillDisappear(ev) { this.#settings.delete(ev.action.id); overlay.unregister(ev.action.id); }
+    onDidReceiveSettings(ev) {
+        this.#settings.set(ev.action.id, ev.payload.settings);
+        if (!overlay.isOn) this.#paint(ev.action, ev.payload.settings);
+    }
     onKeyDown(ev) {
+        if (overlay.wake()) return;
         const sc = SHORTCUTS[ev.payload.settings.shortcut] ?? SHORTCUTS["new-chat"];
         fire(`claudedeck://hotkey/${encodeURIComponent(sc.combo)}`, ev.action);
     }
-    #paint(a, s) { a.setImage(labelledKey("⌘", "#8e8e93", (SHORTCUTS[s.shortcut] ?? SHORTCUTS["new-chat"]).title)); }
+    #paint(a, s) { try { a.setImage(labelledKey("⌘", "#8e8e93", (SHORTCUTS[s.shortcut] ?? SHORTCUTS["new-chat"]).title))?.catch?.(() => {}); } catch { /* gone */ } }
 }
 
 // ---------------------------------------------------------------- Claude Status
@@ -115,6 +153,7 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 function keySvg(level, subtitle) {
     const { color, label } = LEVELS[level] ?? LEVELS.unknown;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144">
+  <rect width="144" height="144" fill="#000"/>
   <rect width="144" height="144" rx="18" fill="#1c1c1e"/>
   <rect width="144" height="10" fill="${color}"/>
   <circle cx="72" cy="52" r="22" fill="${color}"/>
@@ -143,20 +182,28 @@ class ClaudeStatus extends SingletonAction {
     #timer = null;
     #last = { level: "unknown", subtitle: "loading…" };
     onWillAppear(ev) {
-        this.#paint(ev.action);
+        if (!overlay.isOn) this.#paint(ev.action);
+        overlay.register(ev.action, ev.payload.coordinates, () => this.#paint(ev.action));
         if (!this.#timer) { this.#poll(); this.#timer = setInterval(() => this.#poll(), POLL_MS); }
     }
-    onWillDisappear() {
-        if ([...this.actions].length <= 1 && this.#timer) { clearInterval(this.#timer); this.#timer = null; }
+    onWillDisappear(ev) {
+        overlay.unregister(ev.action.id);
+        if ([...this.actions].length === 0 && this.#timer) { clearInterval(this.#timer); this.#timer = null; }
     }
-    onKeyDown() { streamDeck.system.openUrl(PAGE_URL); this.#poll(); }
+    onKeyDown() {
+        if (overlay.wake()) return;
+        streamDeck.system.openUrl(PAGE_URL); this.#poll();
+    }
     async #poll() {
         try { this.#last = await readStatus(); }
         catch (e) { streamDeck.logger.warn(`status poll failed: ${e.message}`); this.#last = { level: "unknown", subtitle: "offline" }; }
-        for (const a of this.actions) this.#paint(a);
+        if (!overlay.isOn) for (const a of this.actions) this.#paint(a);
     }
     #paint(a) {
-        a.setImage(`data:image/svg+xml;base64,${Buffer.from(keySvg(this.#last.level, this.#last.subtitle)).toString("base64")}`);
+        try {
+            a.setImage(`data:image/svg+xml;base64,${Buffer.from(keySvg(this.#last.level, this.#last.subtitle)).toString("base64")}`)
+                ?.catch?.(() => {});
+        } catch { /* context already gone */ }
     }
 }
 
@@ -173,12 +220,18 @@ for (const [id, url] of Object.entries({
 /** Ko-fi — GitHub build only (Marketplace forbids sponsor links inside plugins; package.sh --kofi adds it). */
 class Kofi extends SingletonAction {
     manifestId = `${PLUGIN}.kofi`;
-    onKeyDown() { streamDeck.system.openUrl("https://ko-fi.com/K3K6RR4LY"); }
+    onWillAppear(ev) { overlay.register(ev.action, ev.payload.coordinates, () => { try { ev.action.setImage()?.catch?.(() => {}); } catch { /* gone */ } }); }
+    onWillDisappear(ev) { overlay.unregister(ev.action.id); }
+    onKeyDown() {
+        if (overlay.wake()) return;
+        streamDeck.system.openUrl("https://ko-fi.com/K3K6RR4LY");
+    }
 }
 
 try { streamDeck.actions.registerAction(new Kofi()); } catch { /* plain (Marketplace) manifest has no Ko-fi action */ }
 streamDeck.actions.registerAction(new Reply());
 streamDeck.actions.registerAction(new Shortcut());
 streamDeck.actions.registerAction(new ClaudeStatus());
+streamDeck.actions.registerAction(new ClaudeUsage(`${PLUGIN}.usage`, overlay));
 streamDeck.connect();
 ensureHelper();

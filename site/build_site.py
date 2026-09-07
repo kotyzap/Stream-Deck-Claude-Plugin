@@ -77,13 +77,13 @@ def body(img, toggle_button=True):
 <div class="wrap">
   <nav>
     <a class="brand" href="#"><span class="mark">C</span><span>Stream Deck for Claude</span></a>
-    <div class="navlinks"><a href="#actions">Actions</a><a href="#decks">Decks</a><a href="#how">How it works</a><a href="#install">Install</a><a href="{REPO}">{gh_icon()}</a>{tog}</div>
+    <div class="navlinks"><a href="#usage">Usage</a><a href="#actions">Actions</a><a href="#decks">Decks</a><a href="#how">How it works</a><a href="#install">Install</a><a href="{REPO}">{gh_icon()}</a>{tog}</div>
   </nav>
 
   <div class="hero">
     <div>
       <h1>Answer Claude from your Stream Deck.</h1>
-      <p>Allow once, allow always, deny, stop, "continue" — the prompts you answer fifty times a day, on physical keys. Plus Claude's own shortcuts and a live status.claude.com light.</p>
+      <p>Allow once, allow always, deny, stop, "continue" — the prompts you answer fifty times a day, on physical keys. Plus Claude's own shortcuts, a live status.claude.com light, and your usage budget on the whole deck when you step away.</p>
       <div class="cta">
         <a class="btn" href="{DL}">{dl_icon()}Download plugin</a>
         <a class="btn ghost" href="{REPO}">Source on GitHub</a>
@@ -93,18 +93,31 @@ def body(img, toggle_button=True):
     <img src="{img('hero-decks.png')}" width="1600" height="1434" alt="The three bundled profiles: Stream Deck XL, Stream Deck MK.2 and Stream Deck Mini with Claude permission keys, replies, shortcuts and status">
   </div>
 
+  <section id="usage">
+    <div class="eyebrow">Token budget</div>
+    <h2>Walk away, and the deck tells you what's left.</h2>
+    <p class="lead">Thirty seconds without a press and every key becomes one chart — session, weekly and the per-model cap, a limit per row, the row's full width being 0 to 100%. Touch any key and your layout is back; that first press is swallowed, so waking the deck can never fire Allow or Deny. The Claude Usage key toggles the same view on demand.</p>
+    <div class="sheet"><img src="{img('deck-usage.png')}" width="976" height="644" alt="A Stream Deck MK.2 showing three usage bars across its keys: session 34%, weekly 68%, and a red Fable bar at 86% that is past its on-pace mark"></div>
+    <table>
+      <tr><td>The vertical mark</td><td>How far through that window you already are. Bar behind the mark means you are under pace; past it means you are burning faster than the window allows, and the bar turns red.</td></tr>
+      <tr><td>The caption</td><td>Where you land at this rate — <code>~8% left</code> at the reset, or <code>limit 20h 11m</code> if you are on course to run out before it.</td></tr>
+      <tr><td>Where the numbers come from</td><td>The same source as the desktop app's usage popup: your existing Claude Code sign-in, read locally on this Mac. Nothing is sent anywhere, and nothing is polled at all while you are using the deck.</td></tr>
+    </table>
+  </section>
+
   <section id="actions">
-    <div class="eyebrow">Ten actions</div>
+    <div class="eyebrow">Eleven actions</div>
     <h2>Drag what you need.</h2>
     <p class="lead">The plugin adds a "Deck for Claude" group to the Stream Deck action list — the same way any other plugin does. The bundled profile is one arrangement; every key is replaceable.</p>
-    <div class="sheet"><img src="{img('actions.png')}" width="744" height="384" alt="All actions: Allow once, Allow for session, Always allow, Deny, Stop, Reply, Shortcut, Activate Claude, Claude Status, Inspect"></div>
+    <div class="sheet"><img src="{img('actions.png')}" width="744" height="384" alt="All actions: Allow once, Allow for session, Always allow, Deny, Stop, Reply, Shortcut, Activate Claude, Claude Status, Claude Usage, Inspect"></div>
     <table>
       <tr><td>Allow once · Allow for session · Always allow · Deny</td><td>Presses that button in the permission prompt that is currently on screen. The desktop app has no keyboard shortcuts for these, so the helper finds the button through macOS Accessibility and presses it — about 50 ms.</td></tr>
       <tr><td>Stop</td><td>Brings Claude to the front and presses <kbd>Esc</kbd>.</td></tr>
       <tr><td>Reply</td><td>Types a text you configure ("continue", "yes", "fix it", "commit"…) and presses Return. Claude is activated first, so it never types into the wrong window.</td></tr>
       <tr><td>Shortcut</td><td>Sends one of the app's own accelerators: new chat <kbd>⌘N</kbd>, new Claude Code session <kbd>⌘⇧O</kbd>, search <kbd>⌘⇧K</kbd>, command palette <kbd>⌘K</kbd>, sidebar <kbd>⌘B</kbd>, previous / next session <kbd>⌘⇧[</kbd> <kbd>⌘⇧]</kbd>, side chat <kbd>⌘;</kbd>.</td></tr>
       <tr><td>Claude Status</td><td>Polls status.claude.com every minute. Green, yellow, orange, red follow the incident level; the small line names the affected component. Press opens the status page.</td></tr>
-      <tr><td>Activate Claude · Inspect</td><td>Bring the app forward; write every button label Claude exposes to a log — the repair tool for the day a button gets renamed.</td></tr>
+      <tr><td>Claude Usage</td><td>Session, weekly and per-model limits with the on-pace mark and forecast. Alone on a row it is a compact three-bar tile; press it to turn the whole deck into the chart. Several on one row share a single wide bar across those keys.</td></tr>
+      <tr><td>Activate Claude · Inspect</td><td>Bring the app forward; write every button label Claude exposes to a log — the repair tool for the day a button gets renamed. Inspect is off the 15-key profile by default now that Usage has that spot; drag it on when you need it.</td></tr>
     </table>
     <div style="margin-top:28px" class="states"><img src="{img('status-states.png')}" width="752" height="140" alt="Claude Status key in its five states: OK, Minor, Major, Critical, offline"></div>
   </section>
@@ -112,7 +125,7 @@ def body(img, toggle_button=True):
   <section id="decks">
     <div class="eyebrow">Every deck size</div>
     <h2>Mini, MK.2, XL — a profile for each.</h2>
-    <p class="lead">The installer carries three ready-made profiles — <strong>Claude</strong> (MK.2, 5×3), <strong>Claude Mini</strong> (3×2) and <strong>Claude XL</strong> (8×4) — and Stream Deck installs only the one that matches your device. Six essentials on the Mini; the full set with spare replies and every shortcut on the XL.</p>
+    <p class="lead">The installer carries three ready-made profiles — <strong>Claude</strong> (MK.2, 5×3), <strong>Claude Mini</strong> (3×2) and <strong>Claude XL</strong> (8×4) — and Stream Deck installs only the one that matches your device. Six essentials on the Mini; the full set with spare replies and every shortcut on the XL. The MK.2 and XL layouts keep one key for Claude Usage — the Mini spends all six on controls and relies on the idle chart instead.</p>
   </section>
 
   <section id="how">
@@ -125,6 +138,7 @@ def body(img, toggle_button=True):
       <div class="card"><div class="num">03</div><h3>axpress</h3><p>Swift helper inside the app. Walks Claude's accessibility tree and presses the matching button.</p></div>
       <div class="card"><div class="num">04</div><h3>Claude</h3><p>The prompt is answered. Works even when Claude isn't the front window.</p></div>
     </div>
+    <p class="lead" style="margin-top:28px">The usage chart takes a different path: it reads the OAuth token Claude Code keeps in your login keychain and asks Anthropic's usage endpoint for your limits — only while the chart is on screen, so there is no traffic while you are working the deck. That endpoint is undocumented and rate-limited, so the plugin backs off when told to and keeps showing the last good figures.</p>
   </section>
 
   <section id="install">

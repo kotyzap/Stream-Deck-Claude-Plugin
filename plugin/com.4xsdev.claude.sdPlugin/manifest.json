@@ -1,9 +1,9 @@
 {
   "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
   "Name": "Deck for Claude",
-  "Version": "1.4.4.0",
+  "Version": "1.6.7.0",
   "Author": "Pavel Kotyza",
-  "Description": "Deck for Claude — keys for the Claude desktop app (Cowork, Code, Chat): answer permission prompts (Allow once / for session / always, Deny), Stop, canned replies, shortcuts, live status.claude.com. Requires the bundled ClaudeDeck.app helper (macOS). Independent project, not affiliated with Anthropic. https://www.4xs.dev",
+  "Description": "Deck for Claude — keys for the Claude desktop app (Cowork, Code, Chat): answer permission prompts (Allow once / for session / always, Deny), Stop, canned replies, shortcuts, live status.claude.com, and a usage chart that takes over the deck when idle. Requires the bundled ClaudeDeck.app helper (macOS). Independent project, not affiliated with Anthropic. https://www.4xs.dev",
   "UUID": "com.4xsdev.claude",
   "Icon": "imgs/plugin/marketplace",
   "Category": "Deck for Claude",
@@ -182,6 +182,25 @@
       "States": [
         {
           "Image": "imgs/actions/status/key",
+          "TitleAlignment": "middle",
+          "ShowTitle": false
+        }
+      ]
+    },
+    {
+      "Name": "Claude Usage",
+      "UUID": "com.4xsdev.claude.usage",
+      "Icon": "imgs/actions/usage/icon",
+      "Tooltip": "Session / weekly / model usage with an on-pace mark. One key = compact stats, and pressing it turns the whole deck into the chart (press again to go back). Several on a row share one wide bar. The deck also becomes the chart on its own after 30s idle.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": false,
+      "DisableAutomaticStates": true,
+      "UserTitleEnabled": false,
+      "States": [
+        {
+          "Image": "imgs/actions/usage/key",
           "TitleAlignment": "middle",
           "ShowTitle": false
         }

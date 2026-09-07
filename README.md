@@ -1,12 +1,22 @@
 # Stream Deck for Claude
 
-**Deck for Claude** (plugin ID `com.4xsdev.claude`, helper app ClaudeDeck) — a Stream Deck plugin for the **Claude desktop app** on macOS. Answer permission prompts (Allow once / for session / always, Deny), stop a response, send canned replies, fire Claude's keyboard shortcuts, and watch status.claude.com — on physical keys.
+**Deck for Claude** (plugin ID `com.4xsdev.claude`, helper app ClaudeDeck) — a Stream Deck plugin for the **Claude desktop app** on macOS. Answer permission prompts (Allow once / for session / always, Deny), stop a response, send canned replies, fire Claude's keyboard shortcuts, watch status.claude.com — and see how much of your usage budget is left, on physical keys.
 
 **[Website](https://kotyzap.github.io/Stream-Deck-Claude-Plugin/) · [Download plugin](dist/com.4xsdev.claude-kofi.streamDeckPlugin)**
 
 Two builds of the same plugin (same UUID, either updates the other): the GitHub download above adds a **Buy me a Ko-fi** key; the Elgato Marketplace build (`dist/com.4xsdev.claude.streamDeckPlugin`) leaves it out, as Marketplace guidelines forbid sponsor links inside plugins.
 
 ![Stream Deck with the default Claude profile](docs/img/deck.png)
+
+## Usage on the deck
+
+![The deck as a usage chart](docs/img/deck-usage.png)
+
+Leave the deck alone for 30 seconds and every key repaints as one chart: **session**, **weekly** and the **per-model cap**, one limit per deck row, the row's full width being 0–100%. Touch any key and your layout comes straight back — that first press is swallowed, so waking the deck can never fire Allow or Deny by accident. The **Claude Usage** key toggles the same view on demand.
+
+Each bar carries a vertical **on-pace mark**: how far through that window you are. Bar behind the mark means you are under pace; past it means you are burning faster than the window allows, and the bar turns red. The right-hand caption is the forecast — `~8% left` at this rate, or `limit 20h 11m` if you are on course to run out before the reset.
+
+Numbers come from the same place the desktop app's usage popup gets them: your existing Claude Code sign-in on this Mac, read locally. Nothing is sent anywhere. If you have never signed in to Claude Code the keys read `sign in`.
 
 ## Install
 
@@ -28,7 +38,8 @@ Requirements: macOS 12+, Stream Deck software 6.9+, the Claude desktop app.
 | **Shortcut** | Sends one of Claude.app's own accelerators: New chat <kbd>⌘N</kbd> · New Claude Code session <kbd>⌘⇧O</kbd> · Search <kbd>⌘⇧K</kbd> · Command palette <kbd>⌘K</kbd> · Sidebar <kbd>⌘B</kbd> · Previous / next session <kbd>⌘⇧[</kbd> <kbd>⌘⇧]</kbd> · Side chat <kbd>⌘;</kbd> |
 | **Activate Claude** | Brings the Claude app to the front. |
 | **Claude Status** | Polls `status.claude.com` every 60 s. Key colour follows the incident level; the small line names the affected component. Press opens the status page. |
-| **Inspect** | Writes every button label Claude exposes to `~/Library/Logs/ClaudeDeck.log` — the repair tool if Anthropic renames a button. |
+| **Claude Usage** | Session / weekly / per-model limits with an on-pace mark and a forecast. Alone on a row it is a compact three-bar tile; press it to turn the whole deck into the chart and press again to go back. Several on one row share one wide bar across those keys. |
+| **Inspect** | Writes every button label Claude exposes to `~/Library/Logs/ClaudeDeck.log` — the repair tool if Anthropic renames a button. Not on the 15-key profile by default (the Usage key has that spot); drag it on when you need it. |
 
 ![Claude Status key states](docs/img/status-states.png)
 
@@ -38,7 +49,7 @@ Requirements: macOS 12+, Stream Deck software 6.9+, the Claude desktop app.
 |---|---|
 | ![Mini profile](docs/img/deck-mini.png) | ![XL profile](docs/img/deck-xl.png) |
 
-All three come from `profile/build_profile.py` (`LAYOUTS`); the plugin manifest binds each to its device type, so Stream Deck installs only the matching one.
+All three come from `profile/build_profile.py` (`LAYOUTS`); the plugin manifest binds each to its device type, so Stream Deck installs only the matching one. The 15-key layout spends its last key on **Claude Usage**; XL has room for both that and **Inspect**; Mini keeps all six keys for controls and relies on the 30-second chart instead.
 
 ## How it works
 
@@ -54,7 +65,9 @@ Stream Deck key ──▶ plugin (Node.js, Elgato SDK v2)
                                                   button whose AX title or description matches
 ```
 
-Typing (`Reply`) and shortcuts go through System Events after activating Claude. `Claude Status` is the only action that talks to the network, and only to `status.claude.com`.
+Typing (`Reply`) and shortcuts go through System Events after activating Claude.
+
+Two actions talk to the network. `Claude Status` polls `status.claude.com`. `Claude Usage` reads the OAuth token Claude Code stores in your login keychain and calls Anthropic's usage endpoint with it — only while the chart is on screen, so there is no traffic at all while you are working the deck. Both stay on this Mac; the plugin has nowhere else to send anything.
 
 ## Repository layout
 
@@ -94,6 +107,7 @@ Why the certificate: macOS ties the Accessibility grant to the app's code signat
 ## Limits
 
 - macOS only (Accessibility API, AppleScript).
+- The usage endpoint is not a documented API. It can change without notice, and it rate-limits: the plugin honours `Retry-After` and backs off rather than hammering it. Windows lengths (5 hours, 7 days) are assumed, not reported.
 - Reply text is decoded as ASCII `%XX`; non-ASCII characters come out wrong.
 - On a Mac other than the build machine the bundled helper counts as unsigned by Apple; it works after the Accessibility grant, but rebuilding there needs `make-signing-cert.sh` first.
 
